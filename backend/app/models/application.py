@@ -7,9 +7,9 @@ class Application(Base):
     __tablename__ = "applications"
 
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
-    student_id = Column(Integer, ForeignKey("users.id"))
-    programme_id = Column(Integer, ForeignKey("programmes.id"))
-    year_id = Column(Integer, ForeignKey("academic_years.id"))
+    student_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    programme_id = Column(UUID(as_uuid=True), ForeignKey("programmes.id"))
+    year_id = Column(UUID(as_uuid=True), ForeignKey("academic_years.id"))
     status = Column(String, default="draft")  # draft, submitted, validated, rejected
 
     student = relationship("User", back_populates="applications")

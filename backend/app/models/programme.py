@@ -9,7 +9,7 @@ class Programme(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     description = Column(String)
-    domaine_id = Column(Integer, ForeignKey("domaines.id"))
+    domaine_id = Column(UUID(as_uuid=True), ForeignKey("domaines.id"))
 
     domaine = relationship("Domaines", back_populates="programmes")
     applications = relationship("Application", back_populates="programme")
