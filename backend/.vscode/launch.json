@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FastAPI: Run server",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/app/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--reload"
+            ]
+        }
+    ]
+}

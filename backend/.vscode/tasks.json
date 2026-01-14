@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        },
+
+        {
+            "label": "Lancer le serveur FastAPI",
+            "type": "shell",
+            "command": "poetry run uvicorn app.main:app --reload",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
