@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.db.security import hash_password
 from app.models.user import User
-from backend.app.models.email_verification import EmailVerificationToken
+from app.models.email_verification import EmailVerificationToken
 
 
 def create_user(*, db: Session, username: str, password: str, is_verified: bool):
