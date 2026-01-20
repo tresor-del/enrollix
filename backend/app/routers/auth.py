@@ -9,34 +9,25 @@ from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from app.dependencies import get_db
 from app.models.user import User
 from app.models.email_verification import EmailVerificationToken
+from app.schemas.token import Token
 from app.db.security import verify_password, create_access_token, hash_password
 from app.schemas.user import UserCreate
+from app.schemas.message import Message
 from app.services.email_service import send_verification_email
+from app.db.security import authenticate_user
+from app.crud.auth import create_user, create_verification_email
 
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
 
 @router.post("/token")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
-    user = db.query(User).filter(
-        User.email == form_data.username
-    ).first()
-    
-    if not user or verify_password(form_data.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-        )
-    
-    if not user.is_verified:
-        raise HTTPException(
-            status_code=403,
-            detail="Email not verified. Please check your inbox."
-        )
+    user = authenticate_user(form_data.username, form_data.password)
     
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
 
@@ -45,10 +36,7 @@ def login(
         expires_delta=access_token_expires,
     )
 
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-    }
+    return Token(access_token=access_token, token_type="bearer")
     
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(
@@ -60,37 +48,24 @@ def register(
         raise HTTPException(400, "Email already registered")
     
     # création de l'utilisateur
-    user = User(
-        email=user_in.email,
-        password=hash_password(user_in.password),
-        is_verified=False,
+    user = create_user(
+        db=db, 
+        username=user_in.username, 
+        password=user_in.password, 
+        is_verified=False
     )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
     
     # création de l'email de vérification
-    token = secrets.token_urlsafe(32)
-    
-    verification = EmailVerificationToken(
-        user_id=user.id,
-        token=token,
-        expires_at=datetime.utcnow() + timedelta(hours=24),
-    )
-    
-    db.add(verification)
-    db.commit()
+    token = create_verification_email(db=db, user_id=user.id)
     
     # Envoie d'email à l'utilisateur
-    
     background_tasks.add_task(
         send_verification_email,
         user.email,
         token
     )
     
-    return {"message": "Registration successful. Check your email."}
+    return Message(message="Registration successful. Check your email.")
 
 @router.get("/confirm-email")
 def confirm_email(token: str, db: Session = Depends(get_db)):
@@ -108,11 +83,10 @@ def confirm_email(token: str, db: Session = Depends(get_db)):
 
     if not user:
         raise HTTPException(404, "User not found")
-
+    
     user.is_verified = True
 
     db.delete(record)
     db.commit()
     
-    
-    return {"message": "Email verified successfully"}
+    return Message(message="Email verified successfully")

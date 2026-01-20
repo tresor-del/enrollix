@@ -1,12 +1,12 @@
 from pydantic import BaseModel, EmailStr, Field
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    username: EmailStr
     password: str = Field(min_length=8)
 
 class UserResponse(BaseModel):
     id: str
-    email: EmailStr
+    username: EmailStr
     is_verified: bool
 
     class Config:

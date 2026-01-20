@@ -1,9 +1,13 @@
+from fastapi import HTTPException, status
 from jose import jwt
 from datetime import datetime, timedelta, timezone
 from argon2 import PasswordHasher
 from fastapi.security import OAuth2PasswordBearer
 
+from sqlalchemy.orm import Session
+
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+from app.models.user import User
 
 ph = PasswordHasher()
 
@@ -28,3 +32,22 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+def authenticate_user(db: Session, username: str, password: str) :
+    user = db.query(User).filter(
+        User.email == username
+    ).first()
+    
+    if not user or verify_password(password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+        )
+    
+    if not user.is_verified:
+        raise HTTPException(
+            status_code=403,
+            detail="Email not verified. Please check your inbox."
+        )
+    
+    return user
