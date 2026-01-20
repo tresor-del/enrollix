@@ -52,29 +52,73 @@ Access to protected endpoints is enforced via role-based dependencies.
 
 ```text
 .
+.
 ├── backend
 │   ├── alembic
-│   │   ├── env.py
+│   │   ├── script.py.mako
 │   │   └── versions
+│   │       ├── 0320e6f57d5a_create_initial_tables.py
+│   │       ├── 16aa7df35a39_add_is_verified_to_user_and_add_email_.py
+│   │       ├── 820ac6683106_rename_password_to_hashed_password.py
+│   │       ├── 93e8e9fc24d3_ajout_du_champ_is_verified_a_la_table_.py
 │   ├── alembic.ini
 │   ├── app
 │   │   ├── core
+│   │   │   ├── config.py
+│   │   │   ├── __init__.py
+│   │   ├── crud
+│   │   │   ├── auth.py
+│   │   │   └── __init__.py
 │   │   ├── db
+│   │   │   ├── database.py
+│   │   │   ├── __init__.py
+│   │   │   └── security.py
+│   │   ├── dependencies.py
 │   │   ├── enums
+│   │   │   ├── __init__.py
+│   │   │   └── role_enum.py
+│   │   ├── __init__.py
+│   │   ├── internal
+│   │   │   └── __init__.py
+│   │   ├── main.py
 │   │   ├── models
+│   │   │   ├── academic_year.py
+│   │   │   ├── application.py
+│   │   │   ├── domaine.py
+│   │   │   ├── email_verification.py
+│   │   │   ├── __init__.py
+│   │   │   ├── programme.py
+│   │   │   ├── role.py
+│   │   │   ├── user.py
+│   │   │   └── user_role.py
 │   │   ├── routers
+│   │   │   ├── auth.py
+│   │   │   ├── __init__.py
 │   │   ├── schemas
+│   │   │   ├── __init__.py
+│   │   │   ├── message.py
+│   │   │   ├── token.py
+│   │   │   └── user.py
 │   │   ├── services
-│   │   ├── templates
-│   │   │   ├── layout.html
-│   │   │   └── static
-│   │   │       ├── css
-│   │   │       └── javascript
-│   │   └── main.py
+│   │   │   ├── email_service.py
+│   │   │   ├── __init__.py
+│   │   └── templates
+│   │       ├── layout.html
+│   │       └── static
+│   │           ├── css
+│   │           │   └── base.css
+│   │           └── javascript
+│   ├── poetry.lock
+│   ├── pyproject.toml
 │   ├── run.sh
+│   ├── scripts
+│   │   └── seed_roles.py
 │   └── tests
-└── docs
-    └── uml
+├── docs
+│   └── uml
+│       └── enrollix_version1.uml
+├── LICENSE
+└── README.md
 ```
 
 ---
