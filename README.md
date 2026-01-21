@@ -64,7 +64,7 @@ Access to protected endpoints is enforced via role-based dependencies.
 │   ├── alembic.ini
 │   ├── app
 │   │   ├── core
-│   │   │   ├── config.py
+│   │   │   ├── config.py   
 │   │   │   ├── __init__.py
 │   │   ├── crud
 │   │   │   ├── auth.py
