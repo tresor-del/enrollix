@@ -1,9 +1,6 @@
 from sqlalchemy import UUID, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models.role import Role
-from app.models.user import User
-
 class UserRole(Base):
     __tablename__ = "user_roles"
 

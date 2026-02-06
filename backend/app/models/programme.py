@@ -2,7 +2,6 @@ import uuid
 from sqlalchemy import UUID, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models.domaine import Domaines
 
 class Programme(Base):
     __tablename__ = "programmes"

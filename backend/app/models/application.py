@@ -2,8 +2,6 @@ import uuid
 from sqlalchemy import UUID, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models.programme import Programme
-from app.models.academic_year import AcademicYear
 
 class Application(Base):
     __tablename__ = "applications"

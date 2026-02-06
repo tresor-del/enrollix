@@ -2,8 +2,6 @@ import uuid
 from sqlalchemy import UUID, Boolean, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models.role import Role
-from app.models.application import Application
 
 class User(Base):
     __tablename__ = "users"
