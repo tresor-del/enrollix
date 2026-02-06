@@ -16,7 +16,7 @@ poetry run alembic upgrade head
 
 # Créer les données intiales
 echo "Creating initial data..."
-python -m app.initial_data
+poetry run python -m app.initial_data
 
 # 4. Démarrer l'API FastAPI
 echo "Launching FastAPI..."
