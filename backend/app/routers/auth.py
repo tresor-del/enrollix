@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 
 from sqlalchemy.orm import Session
 
-from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from app.core.config import settings
 from app.dependencies import get_db
 from app.models.user import User
 from app.models.email_verification import EmailVerificationToken
@@ -29,7 +29,7 @@ def login(
 ):
     user = authenticate_user(db=db, username=form_data.username, password=form_data.password)
     
-    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token_expires = timedelta(minutes=int(settings.ACCESS_TOKEN_EXPIRE_MINUTES))
 
     access_token = create_access_token(
         data={"sub": str(user.id)},

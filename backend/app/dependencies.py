@@ -6,7 +6,7 @@ from typing import Annotated
 
 from app.db.database import SessionLocal
 from app.db.security import oauth2_scheme
-from app.core.config import SECRET_KEY, ALGORITHM
+from app.core.config import settings
 from app.models.user import User
 from app.schemas.token import TokenData
 from app.enums.role_enum import RoleEnum
@@ -27,7 +27,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
     )
     
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
         user_id: str = payload.get("sub")
         
         if user_id is None:
