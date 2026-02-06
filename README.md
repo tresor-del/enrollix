@@ -218,20 +218,8 @@ SMTP_PASSWORD=your-password
 ### Development
 
 ```bash
-chmod +x run.sh
-./run.sh
-```
-
-or
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### Production (example)
-
-```bash
-gunicorn -k uvicorn.workers.UvicornWorker app.main:app
+chmod +x ./scripts/run_backend.sh
+./scripts/run_backend.sh
 ```
 
 ---
